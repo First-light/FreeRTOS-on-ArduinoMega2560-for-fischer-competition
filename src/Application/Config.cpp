@@ -11,31 +11,38 @@
 #include "Include.h"
 
 
+
 void USART_0_IRQHandler()
 {
    if( Serial.available()) 
     {
+      char USART_0_Stack[USART_BUFFER_STK] = {0};
       uint8_t count = 0;
       uint16_t temp;
       char temp_char;
+      
       while(Serial.available())//取完所有数�?
       {
         temp = Serial.read();
         temp_char = (char)temp;
-        if(BoardState == BOARD_WAKEUP)//复制一份给处理函数
+        if(boardState == BOARD_WAKEUP)//复制一份给处理函数
         {
           Get_Frame_COM(temp,&MY_USART0);
         }
-        if(count <= CMD_MAX_STACK-1-1)//复制一份给CMD缓冲�?
+        if(count <= USART_BUFFER_STK-1-1)//复制一份给CMD缓冲�?
         {
-          CMD_Stack[count] = temp_char;
+          USART_0_Stack[count] = temp_char;
           count++;
         }
       }
-      CMD_Stack[count] = '\0';//结尾
+      USART_0_Stack[count] = '\0';
       if(strcmp(CMD_Stack,"@") == 0 && CMDstate == CMD_OFF)//CMD唤醒�?
       {
         Open_Task_CMD();
+      }
+      if (USART_0_Stack[0] != 0xEE && CMDstate == CMD_ON)
+      {
+        
       }
     }
 }

@@ -1,144 +1,101 @@
 /**
-  ******************************************************************************
-  * @file    task_CMD.cpp
-  * @author  ÂæêÂì≤ËΩ?
-  * @brief   ÂëΩ‰ª§Ë°?
-  * @verbatim
-  * @endverbatim
-  ******************************************************************************  
-*/ 
+ ******************************************************************************
+ * @file    task_CMD.cpp
+ * @author  –Ï’‹??
+ * @brief   √¸¡Ó??
+ * @verbatim
+ * @endverbatim
+ ******************************************************************************
+ */
 #include "Include.h"
 
-typedef enum{
-    LAN_NULL,
-    LAN_CMDOFF,
-}LanguageType;
-
-typedef struct language {
-    const char* code;
-    LanguageType type;
-}Language;
-
-//ÂáΩÊï∞Â£∞Êòé
-void CMDW_ReplyInput(uint8_t USARTx,char* string,String reply);
-void CMDW_Tip(uint8_t USARTx,char* string);
-void CMDW_Chat(uint8_t USARTx,String string);
-
-void CMD_WaitInput(uint8_t USARTx);
-void CMDReply();
-void CMDClear();
-void CMDlanguage(char* cmd);
-
-//ËØ?Ë®ÄÂ£∞Êòé
-Language LanguageList[] = {
-    {"quit",LAN_CMDOFF},
-};
-
-const uint16_t LanguageCount =  sizeof(LanguageList)/
-                                sizeof(LanguageList[0]);
-
-//ÂáΩÊï∞                           
 void Task_CMD(void)
 {
-    digitalWrite(LED_BOARD, HIGH);
+    digitalWrite(BOARD_LED, HIGH);
     while (1)
     {
         if (CMDstate == CMD_ON)
         {
             CMDClear();
-            while(CMDstate == CMD_ON)
+            while (CMDstate == CMD_ON)
             {
-                CMD_WaitInput(USART_LOG);
-                CMDlanguage(CMD_Stack);
+                CMDInput(USART_LOG);
+                CMDlanguage(CMD_Stack,USART_LOG);
                 CMDClear();
-                vTaskDelay(20/portTICK_PERIOD_MS);
+                vTaskDelay(20 / portTICK_PERIOD_MS);
             }
-        }else 
-        if (CMDstate == CMD_OFF)
+        }
+        else if (CMDstate == CMD_OFF)
         {
             vTaskDelete(NULL);
         }
-
     }
 }
+
 void CMDClear()
 {
-    for (size_t i = 0; i < CMD_MAX_STACK; i++)
+    for (size_t i = 0; i < CMD_STK; i++)
     {
         CMD_Stack[i] = '\0';
     }
 }
 
-void CMDlanguage(char* cmd)
-{
-    LanguageType lang = LAN_NULL;
-    Language* p = LanguageList;
-    for (size_t i = 0; i < LanguageCount; i++)
-    {
-        if (strcmp(cmd, p->code) == 0)
-        {
-            lang = p->type;
-            break;
-        }
-        p++;
-    }
-    switch (lang)
-    {
-
-    case LAN_CMDOFF:
-        CMDW_ReplyInput(USART_LOG,CMD_Stack,"CMDOFF"); 
-        CMDstate = CMD_OFF;
-        break;
-    default:
-        CMDW_ReplyInput(USART_LOG,CMD_Stack,"No Such Language");
-        break;
-    }
-}
-
 void CMDReply()
 {
-    UART_SendChars(USART_LOG,CMD_Stack);
+    UART_SendChars(USART_LOG, CMD_Stack);
 }
 
-void CMDW_ReplyInput(uint8_t USARTx,char* string,String reply)
+void CMDW_ReplyInput(uint8_t USARTx, char *string, String reply)
 {
-    UART_SendString(USARTx,"Maid : ");
-    UART_SendChars(USARTx,string);
-    UART_SendString(USARTx," : ");
-    UART_SendString(USARTx,reply);
-    UART_SendString(USARTx," \n");
+    UART_SendString(USARTx, "Maid : ");
+    UART_SendChars(USARTx, string);
+    UART_SendString(USARTx, " : ");
+    UART_SendString(USARTx, reply);
+    UART_SendString(USARTx, " \n");
 }
 
-void CMDW_Chat(uint8_t USARTx,String string)
+void CMDW_Chat(uint8_t USARTx, String string)
 {
-    UART_SendString(USARTx,"Maid : ");
-    UART_SendString(USARTx,string);
-    UART_SendString(USARTx,"\n");
+    UART_SendString(USARTx, "Maid : ");
+    UART_SendString(USARTx, string);
+    UART_SendString(USARTx, "\n");
 }
 
-void CMDW_Tip(uint8_t USARTx,char* string)
+void CMDW_Tip(uint8_t USARTx, char *string)
 {
-    UART_SendString(USARTx,"Maid : ");
-    UART_SendChars(USARTx,string);
+    UART_SendString(USARTx, "Maid : ");
+    UART_SendChars(USARTx, string);
 }
 
-void CMD_WaitInput(uint8_t USARTx)
+void CMDInput(uint8_t USARTx)
 {
-    UART_SendString(USARTx,">>>");
-    while(CMD_Stack[0] == '\0' || CMD_Stack[0] == 0xEE )vTaskDelay(50/portTICK_PERIOD_MS);
-    UART_SendString(USARTx,CMD_Stack);
-    UART_SendString(USARTx,"\n");
+    UART_SendString(USARTx, ">>>");
+    while (CMD_Stack[0] == '\0' || CMD_Stack[0] == 0xEE)
+        vTaskDelay(50 / portTICK_PERIOD_MS);
+    UART_SendString(USARTx, CMD_Stack);
+    UART_SendString(USARTx, "\n");
 }
 
 void Open_Task_CMD(void)
 {
     CMDstate = CMD_ON;
     taskENTER_CRITICAL();
-    xTaskCreate((TaskFunction_t     ) Task_CMD,
-                (const char * const ) "Task_CMD", 
-                (uint16_t           ) 256,
-                (void * const       ) NULL,
-                (UBaseType_t        ) 0x10,
-                (TaskHandle_t      *) NULL);
+    xTaskCreate((TaskFunction_t)Task_CMD,
+                (const char *const)"Task_CMD",
+                (uint16_t)256,
+                (void *const)NULL,
+                (UBaseType_t)0x10,
+                (TaskHandle_t *)NULL);
     taskEXIT_CRITICAL();
+}
+
+void CMDLoad(char* input)
+{
+    uint16_t count = 0;
+    while (input[count] != '\0' && count <CMD_STK-1-1)
+    {
+        CMD_Stack[count] = input[count];
+        count++;
+    }
+    CMD_Stack[count] = '\0';
 }

@@ -14,29 +14,29 @@ void Task_State() // è½?å¼€å…³æ?€æµ?
 {
     while (1)
     {
-        if (BoardState == BOARD_SLEEP)
+        if (boardState == BOARD_SLEEP)
         {
-            UART_SendString(USART_LOG, "BoardState : Uno_Sleep\n");
-            while (BoardState == BOARD_SLEEP)
+            UART_SendString(USART_LOG, "boardState : Uno_Sleep\n");
+            while (boardState == BOARD_SLEEP)
             {
-                digitalWrite(LED_BOARD, LOW);
+                digitalWrite(BOARD_LED, LOW);
                 vTaskDelay(50 / portTICK_PERIOD_MS);
             }
         }
-        else if (BoardState == BOARD_WAKEUP)
+        else if (boardState == BOARD_WAKEUP)
         {
-            UART_SendString(USART_LOG, "BoardState : Uno_Waking \n");
-            while (BoardState == BOARD_WAKEUP)
+            UART_SendString(USART_LOG, "boardState : Uno_Waking \n");
+            while (boardState == BOARD_WAKEUP)
             {
                 if (CMDstate == CMD_OFF)
                 {
-                    digitalWrite(LED_BOARD, HIGH);
+                    digitalWrite(BOARD_LED, HIGH);
                     vTaskDelay(50 / portTICK_PERIOD_MS);
-                    digitalWrite(LED_BOARD, LOW);
+                    digitalWrite(BOARD_LED, LOW);
                     vTaskDelay(50 / portTICK_PERIOD_MS);
-                    digitalWrite(LED_BOARD, HIGH);
+                    digitalWrite(BOARD_LED, HIGH);
                     vTaskDelay(50 / portTICK_PERIOD_MS);
-                    digitalWrite(LED_BOARD, LOW);
+                    digitalWrite(BOARD_LED, LOW);
                     vTaskDelay(850 / portTICK_PERIOD_MS);
                 }
                 else

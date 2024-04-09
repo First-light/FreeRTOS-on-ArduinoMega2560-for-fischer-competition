@@ -16,8 +16,8 @@ void Usart_Uno_1Claw(COMFrame *Frame)
     switch (temp)
     {
         
-    case 0x00:  BoardState = BOARD_SLEEP;   break;
-    case 0x01:  BoardState = BOARD_WAKEUP;  break; 
+    case 0x00:  boardState = BOARD_SLEEP;   break;
+    case 0x01:  boardState = BOARD_WAKEUP;  break; 
 
     default:break;
     }

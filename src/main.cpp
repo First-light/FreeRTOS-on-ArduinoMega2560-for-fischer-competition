@@ -23,7 +23,7 @@ void Task_Sensor();
 void Device_Init()
 {
   Serial.begin(USART_BaudRate);
-  pinMode(LED_BOARD,OUTPUT);
+  pinMode(BOARD_LED,OUTPUT);
 }
 
 void setup() 
