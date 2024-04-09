@@ -1,0 +1,2 @@
+# ArduinoFreeRTOSProject
+基于Arduino，使用Freertos操作系统的实验型工程，旨在测试freertos在arduino平台的可行性
