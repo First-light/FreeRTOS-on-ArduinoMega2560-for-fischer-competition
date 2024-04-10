@@ -12,6 +12,7 @@
 //??题：
 //1.尽可能减少头文件的添加，减少内存消??
 //2.因为Arduino性能 vTaskDelay(20/portTICK_PERIOD_MS);最低delay20ms
+//3.出现板子异常降速，程序运行怪异，一般是分配的内存不够了
 #ifndef _INCLUDE_H_
 #define _INCLUDE_H_
 

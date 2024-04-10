@@ -79,14 +79,12 @@ void CMDInput(uint8_t USARTx)
 void Open_Task_CMD(void)
 {
     CMDstate = CMD_ON;
-    taskENTER_CRITICAL();
     xTaskCreate((TaskFunction_t)Task_CMD,
                 (const char *const)"Task_CMD",
                 (uint16_t)256,
                 (void *const)NULL,
-                (UBaseType_t)0x10,
+                (UBaseType_t)0x11,
                 (TaskHandle_t *)NULL);
-    taskEXIT_CRITICAL();
 }
 
 void CMDLoad(char* input)

@@ -20,7 +20,7 @@ void USART_0_IRQHandler()
       uint8_t count = 0;
       uint16_t temp;
       char temp_char;
-      
+
       while(Serial.available())//å–å®Œæ‰€æœ‰æ•°æ?
       {
         temp = Serial.read();
@@ -36,13 +36,13 @@ void USART_0_IRQHandler()
         }
       }
       USART_0_Stack[count] = '\0';
-      if(strcmp(CMD_Stack,"@") == 0 && CMDstate == CMD_OFF)//CMDå”¤é†’è¯?
-      {
-        Open_Task_CMD();
-      }
       if (USART_0_Stack[0] != 0xEE && CMDstate == CMD_ON)
       {
-        
+        CMDLoad(USART_0_Stack);
+      }
+      if(USART_0_Stack[0] == '@' && CMDstate == CMD_OFF)//CMDå”¤é†’è¯?
+      {
+        Open_Task_CMD();
       }
     }
 }
@@ -53,7 +53,7 @@ void USARTS_IRQHandler()//ä¼?ä¸?æ–?
   while(1)
   {
     USART_0_IRQHandler();
-    vTaskDelay(25/portTICK_PERIOD_MS);//æ¯?100msè¯»ä¸€æ¬¡ä¸²å?
+    vTaskDelay(100/portTICK_PERIOD_MS);//æ¯?100msè¯»ä¸€æ¬¡ä¸²å?
   }
 }
 

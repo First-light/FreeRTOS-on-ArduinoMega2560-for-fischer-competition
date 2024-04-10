@@ -18,8 +18,8 @@
 #include "System.h"
 
 /******************************хннЯ??**********************************/
-#define USART_IRQHandler_STK 128
-#define USART_IRQHandler_PRI 0x10
+#define USART_IRQHandler_STK 512
+#define USART_IRQHandler_PRI 0x99
 
 #define Task_State_STK 128
 #define Task_State_PRI 0x10
