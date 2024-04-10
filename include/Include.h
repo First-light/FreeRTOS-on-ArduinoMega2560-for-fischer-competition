@@ -13,6 +13,7 @@
 //1.尽可能减少头文件的添加，减少内存消??
 //2.因为Arduino性能 vTaskDelay(20/portTICK_PERIOD_MS);最低delay20ms
 //3.出现板子异常降速，程序运行怪异，一般是分配的内存不够了
+//4.串口接收数据偶尔会导致数据损坏，数据被截断的情况（被分成多段送来了）
 #ifndef _INCLUDE_H_
 #define _INCLUDE_H_
 
@@ -23,10 +24,12 @@
 #include "Analyse.h"
 
 /******************************重定向宏定**********************************/
-#define USART_LOG USART_0
+#define USART_LOG USART_1
 #define USART_LOG_SERIAL USART_SERIAL0
 /******************************参数宏定**********************************/
-#define USART_BaudRate 9600
+#define USART_0_BAUDRATE 9600
+#define USART_1_BAUDRATE 38400
+
 #define USART_BUFFER_STK 128
 #define CMD_STK USART_BUFFER_STK
 /******************************引脚定义**********************************/
@@ -35,23 +38,12 @@
 #define RGB_PIN_BLUE 11
 #define BOARD_LED 13
 
-#define L_MOTOR_PORTa 
-#define L_MOTOR_PORTb 
-#define L_MOTOR_PWM 
- 
-#define R_MOTOR_PORTa
-#define R_MOTOR_PORTb
-#define R_MOTOR_PWM
+#define RX1 19
+#define TX1 18
+#define HC05_KEY 22
 
-#define BOND1_PORTa
-#define BOND1_PORTb
-#define BOND1_PWM
-
-#define BOND2_PORTa
-#define BOND2_PORTb
-#define BOND2_PWM
-/******************************函数定义**********************************/
-
+/******************************任务标签定义**********************************/
+#define USART_UNO_1CLAW 0x99
 /******************************枚举定义**********************************/
 typedef enum
 {
@@ -86,12 +78,19 @@ typedef struct
   double  expected_position;
   double  expedted_pwm;
 } MOTORTypedef;
-
 /******************************变量定义**********************************/
 extern BoardState boardState;
-extern char CMD_Stack[CMD_STK]; // 缂撳啿鍖?
-extern CMDTypeState CMDstate;      // CMD寮�鍏?
-/* ************************************ 任务声明 **************************************** */
-#define USART_UNO_1CLAW 0x99
-void Usart_Uno_1Claw(COMFrame *Frame);
+extern char CMD_Stack[CMD_STK]; 
+extern CMDTypeState CMDstate;      
+extern uint8_t CMD_Ifout;
+extern uint8_t CMD_Outport; 
+extern uint8_t USART_IRQNFLAG;
+
+extern uint8_t HC05key;
+extern uint8_t HC05power;
+
+extern Arduino_COM_typedef MY_USART0;
+extern Arduino_COM_typedef MY_USART1;
+
+
 #endif

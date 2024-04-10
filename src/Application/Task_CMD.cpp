@@ -20,6 +20,13 @@ void Task_CMD(void)
             while (CMDstate == CMD_ON)
             {
                 CMDInput(USART_LOG);
+                if (CMD_Ifout)
+                {
+                    UART_SendString(USART_LOG,"Send:");
+                    UART_SendString(USART_LOG,CMD_Stack);
+                    UART_SendString(USART_LOG,"\n");
+                    UART_SendString(CMD_Outport,CMD_Stack);
+                }
                 CMDlanguage(CMD_Stack,USART_LOG);
                 CMDClear();
                 vTaskDelay(20 / portTICK_PERIOD_MS);
@@ -47,23 +54,21 @@ void CMDReply()
 
 void CMDW_ReplyInput(uint8_t USARTx, char *string, String reply)
 {
-    UART_SendString(USARTx, "Maid : ");
+    UART_SendString(USARTx, "input[");
     UART_SendChars(USARTx, string);
-    UART_SendString(USARTx, " : ");
+    UART_SendString(USARTx, "] : ");
     UART_SendString(USARTx, reply);
     UART_SendString(USARTx, " \n");
 }
 
 void CMDW_Chat(uint8_t USARTx, String string)
 {
-    UART_SendString(USARTx, "Maid : ");
     UART_SendString(USARTx, string);
     UART_SendString(USARTx, "\n");
 }
 
 void CMDW_Tip(uint8_t USARTx, char *string)
 {
-    UART_SendString(USARTx, "Maid : ");
     UART_SendChars(USARTx, string);
 }
 
@@ -97,3 +102,4 @@ void CMDLoad(char* input)
     }
     CMD_Stack[count] = '\0';
 }
+

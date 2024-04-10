@@ -47,13 +47,48 @@ void USART_0_IRQHandler()
     }
 }
 
+void USART_1_IRQHandler()
+{
+   if(Serial1.available()) 
+    {
+      char USART_1_Stack[USART_BUFFER_STK] = {0};
+      uint8_t count = 0;
+      uint16_t temp;
+      char temp_char;
+
+      while(Serial1.available())//取完所有数�?
+      {
+        temp = Serial1.read();
+        temp_char = (char)temp;
+        if(boardState == BOARD_WAKEUP)//复制一份给处理函数
+        {
+          Get_Frame_COM(temp,&MY_USART1);
+        }
+        if(count <= USART_BUFFER_STK-1-1)//复制一份给CMD缓冲�?
+        {
+          USART_1_Stack[count] = temp_char;
+          count++;
+        }
+      }
+      USART_1_Stack[count] = '\0';
+      if (USART_1_Stack[0] != 0xEE && CMDstate == CMD_ON)
+      {
+        CMDLoad(USART_1_Stack);
+      }
+      if(USART_1_Stack[0] == '@' && CMDstate == CMD_OFF)//CMD唤醒�?
+      {
+        Open_Task_CMD();
+      }
+    }
+}
 
 void USARTS_IRQHandler()//�?�?�?
 {
   while(1)
   {
     USART_0_IRQHandler();
-    vTaskDelay(100/portTICK_PERIOD_MS);//�?100ms读一次串�?
+    USART_1_IRQHandler();
+    vTaskDelay(200/portTICK_PERIOD_MS);//�?100ms读一次串�?
   }
 }
 

@@ -35,7 +35,7 @@ void UART_SendString(uint8_t USARTx,String string);
 void UART_SendInt(uint8_t USARTx,int Num);
 void UART_SendChars(uint8_t USARTx,char* string);
 /* ************************************ 字典声明 **************************************** */
-
+extern COMFunDict My_USART0_Prop_Array[];
 extern COMFunDict My_USART1_Prop_Array[];
 extern COMFunDict My_USART2_Prop_Array[];
 extern COMFunDict My_USART3_Prop_Array[];

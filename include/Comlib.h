@@ -76,8 +76,6 @@ typedef struct arduino_com_typedef
     COMRecStatus COM_Rec_Status;
 } Arduino_COM_typedef;
 
-extern Arduino_COM_typedef MY_USART0;
-
 /******************************ºËÐÄº¯Êý*********************************/
 
 void Send_Frame_COM(COMFrame *, Arduino_COM_typedef *);

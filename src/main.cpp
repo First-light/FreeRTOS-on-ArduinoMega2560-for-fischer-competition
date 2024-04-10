@@ -22,8 +22,10 @@ void Task_Sensor();
 /******************************主函�?**********************************/
 void Device_Init()
 {
-  Serial.begin(USART_BaudRate);
+  Serial.begin(USART_0_BAUDRATE);
+  Serial1.begin(USART_1_BAUDRATE);
   pinMode(BOARD_LED,OUTPUT);
+
 }
 
 void setup() 
