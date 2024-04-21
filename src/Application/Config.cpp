@@ -88,7 +88,7 @@ void USARTS_IRQHandler()//ä¼?ä¸?æ–?
   {
     USART_0_IRQHandler();
     USART_1_IRQHandler();
-    vTaskDelay(200/portTICK_PERIOD_MS);//æ¯?100msè¯»ä¸€æ¬¡ä¸²å?
+    vTaskDelay(100/portTICK_PERIOD_MS);//æ¯?100msè¯»ä¸€æ¬¡ä¸²å?
   }
 }
 

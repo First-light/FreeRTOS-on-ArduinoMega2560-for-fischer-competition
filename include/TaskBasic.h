@@ -18,7 +18,7 @@
 #include "System.h"
 
 /*****************************任务宏定义**********************************/
-#define USART_IRQHandler_STK 1024
+#define USART_IRQHandler_STK 1512
 #define USART_IRQHandler_PRI 0x99
 #define Task_State_STK 128
 #define Task_State_PRI 0x10

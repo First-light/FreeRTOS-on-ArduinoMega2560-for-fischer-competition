@@ -5,7 +5,7 @@ void Task_Chassis()
     UART_SendString(USART_LOG, "Task_Chassis Ready\n");
     while (1)
     {
-        
+        //FIS_SendByte(1);
         vTaskDelay(25 / portTICK_PERIOD_MS); // ??100ms∂¡“ª¥Œ¥Æ??
     }
 }

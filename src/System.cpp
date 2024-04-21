@@ -26,6 +26,8 @@ uint8_t CMD_Ifout = 0;
 uint8_t CMD_Outport = 0; 
 uint8_t USART_IRQNFLAG = 0;
 
+uint8_t fis_in[8] = {0};
+
 COMFunDict My_USART0_Prop_Array[] = {//×Öµä
 	{USART_UNO_1CLAW,Usart_Uno_1Claw},
 };

@@ -29,6 +29,7 @@
 /******************************参数宏定**********************************/
 #define USART_0_BAUDRATE 9600
 #define USART_1_BAUDRATE 38400
+#define USART_2_BAUDRATE 9600
 
 #define USART_BUFFER_STK 128
 #define CMD_STK USART_BUFFER_STK
@@ -37,6 +38,36 @@
 #define RGB_PIN_GREED 10
 #define RGB_PIN_BLUE 11
 #define BOARD_LED 13
+
+#define IN1 23
+#define IN2 25
+#define IN3 27
+#define IN4 29
+#define IN5 31
+#define IN6 33
+#define IN7 35
+#define IN8 37
+
+#define M1A 38
+#define M1B 39
+#define M1P 2
+
+#define M2A 40
+#define M2B 41
+#define M2P 3
+
+#define M3A 42
+#define M3B 43
+#define M3P 4
+
+#define M4A 44
+#define M4B 45
+#define M4P 5
+
+#define FIRE1 46
+#define FIRE2 47
+#define LEDF1 48
+#define LEDF2 49
 
 #define RX1 19
 #define TX1 18
@@ -78,6 +109,7 @@ typedef struct
   double  expected_position;
   double  expedted_pwm;
 } MOTORTypedef;
+
 /******************************变量定义**********************************/
 extern BoardState boardState;
 extern char CMD_Stack[CMD_STK]; 
@@ -88,6 +120,8 @@ extern uint8_t USART_IRQNFLAG;
 
 extern uint8_t HC05key;
 extern uint8_t HC05power;
+
+extern uint8_t fis_in[8];
 
 extern Arduino_COM_typedef MY_USART0;
 extern Arduino_COM_typedef MY_USART1;
